@@ -66,6 +66,56 @@ const NeuralNetwork = () => {
   );
 };
 
+// Simple 3D Project Card Component
+const ProjectCard3D = ({ title }: { title: string }) => {
+  const meshRef = useRef<THREE.Mesh>(null);
+
+  useFrame((state) => {
+    if (meshRef.current) {
+      meshRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.3;
+      meshRef.current.rotation.x = Math.cos(state.clock.elapsedTime * 0.3) * 0.1;
+    }
+  });
+
+  return (
+    <Float speed={2} rotationIntensity={0.3} floatIntensity={0.3}>
+      <mesh ref={meshRef}>
+        <boxGeometry args={[1.5, 2, 0.3]} />
+        <meshStandardMaterial
+          color="#0a0a0a"
+          transparent
+          opacity={0.8}
+          roughness={0.2}
+          metalness={0.8}
+          emissive="#00ffff"
+          emissiveIntensity={0.1}
+        />
+      </mesh>
+      
+      {/* Floating particles around the card */}
+      <group>
+        {[...Array(8)].map((_, i) => (
+          <mesh
+            key={i}
+            position={[
+              Math.sin(i * 0.8) * 2,
+              Math.cos(i * 0.6) * 1.5,
+              Math.sin(i * 0.4) * 1
+            ]}
+          >
+            <sphereGeometry args={[0.02, 8, 8]} />
+            <meshStandardMaterial
+              color="#00ffff"
+              emissive="#00ffff"
+              emissiveIntensity={0.5}
+            />
+          </mesh>
+        ))}
+      </group>
+    </Float>
+  );
+};
+
 // ==================== UI COMPONENTS ====================
 
 // Navigation Component
@@ -332,7 +382,7 @@ const AboutPage = () => {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.5 + index * 0.1 }}
-                    whileHover={{ scale: 1.05, borderColor: "hsl(var(--primary))" }}
+                    whileHover={{ scale: 1.05 }}
                   >
                     {skill}
                   </motion.div>
@@ -381,20 +431,28 @@ const ProjectCard = ({ project, index, onExpand }: {
       className="glass p-6 rounded-xl border border-primary/30 group cursor-pointer"
       whileHover={{ 
         scale: 1.02, 
-        boxShadow: "0 0 40px hsl(var(--primary) / 0.4)",
-        borderColor: "hsl(var(--primary))"
+        boxShadow: "0 0 40px rgba(0, 255, 255, 0.4)"
       }}
       onClick={() => onExpand(project)}
     >
       <div className="h-48 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg mb-4 flex items-center justify-center relative overflow-hidden">
-        {/* Simplified 3D effect using CSS */}
-        <div className="absolute inset-0 bg-gradient-to-br from-cyber-cyan/10 to-cyber-purple/10 rounded-lg"></div>
-        <div className="relative z-10 text-center">
-          <div className="text-6xl mb-2 text-primary">⚡</div>
-          <div className="text-sm text-muted-foreground font-mono">3D_PROJECT.mesh</div>
+        <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
+          <ambientLight intensity={0.4} />
+          <pointLight position={[5, 5, 5]} intensity={1} color="#00ffff" />
+          <pointLight position={[-5, -5, -5]} intensity={0.5} color="#ff00ff" />
+          <ProjectCard3D title={project.title} />
+          <OrbitControls 
+            enableZoom={false} 
+            enablePan={false}
+            autoRotate
+            autoRotateSpeed={1}
+          />
+        </Canvas>
+        
+        {/* 3D Label Overlay */}
+        <div className="absolute bottom-2 right-2 text-xs text-muted-foreground font-mono bg-background/20 px-2 py-1 rounded">
+          3D_PROJECT.mesh
         </div>
-        <div className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-        <div className="absolute bottom-2 left-2 w-1 h-1 bg-secondary rounded-full animate-pulse"></div>
       </div>
       
       <h3 className="text-xl font-bold text-glow-cyan mb-2 group-hover:text-glow-pink transition-all">
