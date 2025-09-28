@@ -66,49 +66,6 @@ const NeuralNetwork = () => {
   );
 };
 
-// 3D Project Card Component
-const ProjectCard3D = ({ title, description, technologies, isExpanded, onClick }: {
-  title: string;
-  description: string;
-  technologies: string[];
-  isExpanded: boolean;
-  onClick: () => void;
-}) => {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  useFrame((state) => {
-    if (meshRef.current && !isExpanded) {
-      meshRef.current.rotation.y = Math.sin(state.clock.elapsedTime) * 0.1;
-    }
-  });
-
-  return (
-    <PresentationControls
-      global
-      rotation={[0.13, 0.1, 0]}
-      polar={[-0.4, 0.2]}
-      azimuth={[-1, 0.75]}
-      config={{ mass: 2, tension: 400 }}
-      snap={{ mass: 4, tension: 400 }}
-    >
-      <Float speed={1.4} rotationIntensity={0.5} floatIntensity={0.5}>
-        <mesh ref={meshRef} onClick={onClick} scale={isExpanded ? 1.2 : 1}>
-          <boxGeometry args={[2, 3, 0.2]} />
-          <meshStandardMaterial
-            color="#1a1a2e"
-            transparent
-            opacity={0.8}
-            roughness={0.4}
-            metalness={0.2}
-            emissive="#1a1a2e"
-            emissiveIntensity={0.1}
-          />
-        </mesh>
-      </Float>
-    </PresentationControls>
-  );
-};
-
 // ==================== UI COMPONENTS ====================
 
 // Navigation Component
@@ -429,18 +386,15 @@ const ProjectCard = ({ project, index, onExpand }: {
       }}
       onClick={() => onExpand(project)}
     >
-      <div className="h-48 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg mb-4 flex items-center justify-center">
-        <Canvas camera={{ position: [0, 0, 5] }}>
-          <ambientLight intensity={0.5} />
-          <pointLight position={[10, 10, 10]} color="#00ffff" />
-          <ProjectCard3D
-            title={project.title}
-            description={project.description}
-            technologies={project.technologies}
-            isExpanded={false}
-            onClick={() => {}}
-          />
-        </Canvas>
+      <div className="h-48 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg mb-4 flex items-center justify-center relative overflow-hidden">
+        {/* Simplified 3D effect using CSS */}
+        <div className="absolute inset-0 bg-gradient-to-br from-cyber-cyan/10 to-cyber-purple/10 rounded-lg"></div>
+        <div className="relative z-10 text-center">
+          <div className="text-6xl mb-2 text-primary">⚡</div>
+          <div className="text-sm text-muted-foreground font-mono">3D_PROJECT.mesh</div>
+        </div>
+        <div className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+        <div className="absolute bottom-2 left-2 w-1 h-1 bg-secondary rounded-full animate-pulse"></div>
       </div>
       
       <h3 className="text-xl font-bold text-glow-cyan mb-2 group-hover:text-glow-pink transition-all">
