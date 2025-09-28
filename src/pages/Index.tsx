@@ -3,10 +3,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { 
   OrbitControls, 
   PresentationControls, 
-  Sphere, 
-  MeshDistortMaterial,
   Float,
-  Text3D,
   Stars
 } from '@react-three/drei';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -22,12 +19,12 @@ const NeuralNetwork = () => {
   // Create neural network nodes
   const nodes = useMemo(() => {
     const nodeArray = [];
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 30; i++) {
       nodeArray.push({
         position: [
-          (Math.random() - 0.5) * 20,
-          (Math.random() - 0.5) * 20,
-          (Math.random() - 0.5) * 20
+          (Math.random() - 0.5) * 15,
+          (Math.random() - 0.5) * 15,
+          (Math.random() - 0.5) * 15
         ],
         scale: Math.random() * 0.1 + 0.05,
       });
@@ -51,44 +48,20 @@ const NeuralNetwork = () => {
       <Stars radius={50} depth={50} count={1000} factor={2} saturation={0} fade />
       {nodes.map((node, index) => (
         <Float key={index} speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-          <Sphere position={node.position as [number, number, number]} args={[node.scale, 8, 8]}>
-            <MeshDistortMaterial
+          <mesh position={node.position as [number, number, number]}>
+            <sphereGeometry args={[node.scale, 8, 8]} />
+            <meshStandardMaterial
               color="#00ffff"
               transparent
               opacity={0.6}
-              distort={0.3}
-              speed={2}
               roughness={0.4}
+              metalness={0.3}
+              emissive="#00ffff"
+              emissiveIntensity={0.2}
             />
-          </Sphere>
+          </mesh>
         </Float>
       ))}
-      
-      {/* Connection lines between nodes */}
-      {nodes.map((node, index) => {
-        if (index < nodes.length - 1) {
-          const nextNode = nodes[index + 1];
-          const points = [
-            new THREE.Vector3(...node.position),
-            new THREE.Vector3(...nextNode.position)
-          ];
-          
-          return (
-            <line key={`line-${index}`}>
-              <bufferGeometry>
-                <bufferAttribute
-                  attach="attributes-position"
-                  count={points.length}
-                  array={new Float32Array(points.flatMap(p => [p.x, p.y, p.z]))}
-                  itemSize={3}
-                />
-              </bufferGeometry>
-              <lineBasicMaterial color="#00ffff" transparent opacity={0.2} />
-            </line>
-          );
-        }
-        return null;
-      })}
     </group>
   );
 };
@@ -121,13 +94,14 @@ const ProjectCard3D = ({ title, description, technologies, isExpanded, onClick }
       <Float speed={1.4} rotationIntensity={0.5} floatIntensity={0.5}>
         <mesh ref={meshRef} onClick={onClick} scale={isExpanded ? 1.2 : 1}>
           <boxGeometry args={[2, 3, 0.2]} />
-          <MeshDistortMaterial
+          <meshStandardMaterial
             color="#1a1a2e"
             transparent
             opacity={0.8}
-            distort={0.1}
-            speed={2}
             roughness={0.4}
+            metalness={0.2}
+            emissive="#1a1a2e"
+            emissiveIntensity={0.1}
           />
         </mesh>
       </Float>
@@ -699,15 +673,18 @@ const ContactPage = () => {
           <pointLight position={[10, 10, 10]} color="#00ffff" />
           <Stars radius={50} depth={50} count={500} factor={1} saturation={0} fade />
           <Float speed={0.5} rotationIntensity={0.2} floatIntensity={0.2}>
-            <Sphere args={[1, 32, 32]} position={[3, 2, -5]}>
-              <MeshDistortMaterial
+            <mesh position={[3, 2, -5]}>
+              <sphereGeometry args={[1, 32, 32]} />
+              <meshStandardMaterial
                 color="#ff00ff"
                 transparent
                 opacity={0.1}
-                distort={0.2}
-                speed={1}
+                roughness={0.4}
+                metalness={0.3}
+                emissive="#ff00ff"
+                emissiveIntensity={0.05}
               />
-            </Sphere>
+            </mesh>
           </Float>
         </Canvas>
       </div>
