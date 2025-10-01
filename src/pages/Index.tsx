@@ -129,7 +129,7 @@ const NeuralNetwork = () => {
 const SkillsSphere = ({ skills }: { skills: string[] }) => {
   // Distribute points approximately evenly on a sphere using the golden spiral method
   const radius = 6;
-  const texture = useTexture('/profile.jpg');
+  const texture = useTexture(new URL('/profile.jpg', import.meta.env.BASE_URL).href);
   const points = useMemo(() => {
     const phi = Math.PI * (3 - Math.sqrt(5));
     const base = skills.map((_, i) => {
@@ -865,7 +865,7 @@ const ProjectsPage = () => {
       title: "Cortexa – AI Testing Agent",
       description: "AI agent that ingests CRs, FSDs, BRDs to auto‑generate test suites in minutes.",
       longDescription: "Cortexa accelerates QA by turning product documents (change requests, functional specs, business requirements, etc.) into executable test collateral. Powered by Claude Sonnet 4 and domain‑tuned prompts, it extracts entities, constraints, flows, and edge cases, then generates requirement statements, test scenarios, and detailed test cases with clear steps, data, and expected results. The React UI streams results live with traceability to source spans.",
-      image: "/cortexa.png",
+      image: new URL('/cortexa.png', import.meta.env.BASE_URL).href,
       link: "https://example.com/cortexa",
       technologies: ["React", "TypeScript", "Tailwind CSS", "FastAPI", "Python", "PostgreSQL", "Claude Sonnet 4", "LangChain", "Docker"],
       highlights: [
@@ -906,7 +906,7 @@ const ProjectsPage = () => {
       title: "Portfolio Website",
       description: "Production‑grade personal portfolio showcasing engineering work with immersive motion design, 3D scenes, parallax, and scroll‑driven storytelling.",
       longDescription: "This portfolio is engineered as a performant, interactive showcase of my work. It blends React + TypeScript with Tailwind and Framer Motion for smooth micro‑interactions, and integrates Three.js via @react-three/fiber for 3D scenes. Sections are sequenced with scroll‑driven animation and staged transitions (e.g., parallax background, center‑zoom project reveals). The architecture emphasizes clarity and component reusability, with carefully tuned accessibility, prefers‑reduced‑motion fallbacks, and responsive layouts. The result is a narrative experience that puts real projects first while keeping the UI fast, vivid, and discoverable.",
-      image: "/portfolio.png",
+      image: new URL('/portfolio.png', import.meta.env.BASE_URL).href,
       technologies: ["React", "TypeScript", "Vite", "Tailwind CSS", "Framer Motion", "Three.js"],
       highlights: [
         "3D scenes via @react-three/fiber with lightweight materials",
