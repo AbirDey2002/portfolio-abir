@@ -9,6 +9,9 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
+  // Set base for GitHub Pages when deploying from a project subpath.
+  // Change to your repo name if it differs from package name.
+  base: "/portfolio-abir/",
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {
     alias: {

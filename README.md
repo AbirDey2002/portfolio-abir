@@ -39,6 +39,19 @@ npm run build
 npm run preview
 ```
 
+## Deploy to GitHub Pages (branch v1)
+
+```bash
+# Ensure you're on branch v1
+git checkout v1
+
+# Build and publish the dist/ folder to the gh-pages branch
+npm run build
+npm run deploy
+
+# In GitHub repo settings → Pages, set Source to 'Deploy from a branch' → gh-pages
+```
+
 ## Project Scripts
 
 - `npm run dev` — start Vite dev server with HMR
