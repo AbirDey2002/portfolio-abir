@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
   },
   // GitHub Pages project site path: https://AbirDey2002.github.io/cyber-viz-space/
-  base: "/cyber-viz-space/",
+  base: process.env.NODE_ENV === 'production' ? '/cyber-viz-space/' : '/',
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {
     alias: {
