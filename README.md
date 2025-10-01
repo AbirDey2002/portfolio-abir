@@ -1,4 +1,4 @@
-# Cyber Viz Space — Local Development
+# abir-portfolio — Local Development
 
 This repository contains my personal portfolio web app (React + Vite + Tailwind + Framer Motion + Three.js). Follow the steps below to run it locally.
 
@@ -17,7 +17,7 @@ nvm use 18
 ```bash
 # 1) Clone
 git clone <YOUR_GIT_URL>
-cd cyber-viz-space
+cd abir-portfolio
 
 # 2) Install dependencies
 npm install
